@@ -1,20 +1,11 @@
 {
   "version": 2,
-  "cli": {
-    "defaultCollection": "@nrwl/next"
-  },
+  "cli": { "defaultCollection": "@nrwl/next" },
   "defaultProject": "next-app",
   "generators": {
-    "@nrwl/react": {
-      "application": {
-        "babel": true
-      }
-    },
+    "@nrwl/react": { "application": { "babel": true } },
     "@nrwl/next": {
-      "application": {
-        "style": "styled-components",
-        "linter": "eslint"
-      }
+      "application": { "style": "styled-components", "linter": "eslint" }
     }
   },
   "projects": {
@@ -30,16 +21,11 @@
             "root": "apps/next-app",
             "outputPath": "dist/apps/next-app"
           },
-          "configurations": {
-            "production": {}
-          }
+          "configurations": { "production": {} }
         },
         "serve": {
           "executor": "@nrwl/next:server",
-          "options": {
-            "buildTarget": "next-app:build",
-            "dev": true
-          },
+          "options": { "buildTarget": "next-app:build", "dev": true },
           "configurations": {
             "production": {
               "buildTarget": "next-app:build:production",
@@ -49,9 +35,7 @@
         },
         "export": {
           "executor": "@nrwl/next:export",
-          "options": {
-            "buildTarget": "next-app:build:production"
-          }
+          "options": { "buildTarget": "next-app:build:production" }
         },
         "test": {
           "executor": "@nrwl/jest:jest",
@@ -82,15 +66,54 @@
             "devServerTarget": "next-app:serve"
           },
           "configurations": {
-            "production": {
-              "devServerTarget": "next-app:serve:production"
-            }
+            "production": { "devServerTarget": "next-app:serve:production" }
+          }
+        },
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "options": { "lintFilePatterns": ["apps/next-app-e2e/**/*.{js,ts}"] }
+        }
+      }
+    },
+    "shared-lib-publishable": {
+      "root": "libs/shared/lib-publishable",
+      "sourceRoot": "libs/shared/lib-publishable/src",
+      "projectType": "library",
+      "targets": {
+        "build": {
+          "executor": "@nrwl/web:package",
+          "outputs": ["{options.outputPath}"],
+          "options": {
+            "outputPath": "dist/libs/shared/lib-publishable",
+            "tsConfig": "libs/shared/lib-publishable/tsconfig.lib.json",
+            "project": "libs/shared/lib-publishable/package.json",
+            "entryFile": "libs/shared/lib-publishable/src/index.ts",
+            "external": ["react", "react-dom", "react-is", "styled-components"],
+            "babelConfig": "@nrwl/react/plugins/bundle-babel",
+            "rollupConfig": "@nrwl/react/plugins/bundle-rollup",
+            "assets": [
+              {
+                "glob": "libs/shared/lib-publishable/README.md",
+                "input": ".",
+                "output": "."
+              }
+            ]
           }
         },
         "lint": {
           "executor": "@nrwl/linter:eslint",
           "options": {
-            "lintFilePatterns": ["apps/next-app-e2e/**/*.{js,ts}"]
+            "lintFilePatterns": [
+              "libs/shared/lib-publishable/**/*.{ts,tsx,js,jsx}"
+            ]
+          }
+        },
+        "test": {
+          "executor": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/shared/lib-publishable"],
+          "options": {
+            "jestConfig": "libs/shared/lib-publishable/jest.config.js",
+            "passWithNoTests": true
           }
         }
       }
